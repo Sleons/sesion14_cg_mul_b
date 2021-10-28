@@ -1,0 +1,100 @@
+<!DOCTYPE html >
+    <html>
+    <head>
+    <meta charset = "utf-8"/>
+    <style>
+    body {
+        background - color: #ffffff;
+        margin: 0;
+        overflow: hidden;
+    } </style> </head>
+    <body>
+    <button>Aceptar</button>
+<!--- https://ajax.googleapis.com/ajax/libs/threejs/r76/three.min.js -->
+<script src = "https://cdnjs.cloudflare.com/ajax/libs/three.js/95/three.min.js"> </script>
+<script>
+var camera, scene, renderer;
+var geometria, material, mesh;
+var clock;
+
+
+function cubo(x, y, z, px, py, pz, material, color, wf) {
+    geometria = new THREE.CubeGeometry(x, y, z);
+    switch(material) {
+        case 'Basic': material = new THREE.MeshBasicMaterial({color: color, wireframe: wf}); break;
+        case 'Standard': material = new THREE.MeshStandardMaterial({color: color, wireframe: wf}); break;
+        case 'Physical': material = new THREE.MesPhysicalMaterial({color: color, wireframe: wf}); break;
+        case 'Phong': material = new THREE.MeshPhongMaterial({color: color, wireframe: wf}); break;
+        case 'Lambert': material = new THREE.MeshLambertMaterial({color: color, wireframe: wf}); break;
+    }
+    cube = new THREE.Mesh(geometria, material);
+    scene.add(cube);
+    cube.position.set(px, py, pz);
+
+    return cube;
+}
+
+function init() {
+    renderer = new THREE.WebGLRenderer();
+    renderer.setSize(window.innerWidth*0.99, window.innerHeight*0.99);
+    document.body.appendChild(renderer.domElement);
+    scene = new THREE.Scene();
+    
+    var arrCube = [];
+    var t = 4;        // esta variable lo que hace es dar el tamaño del cubo 
+    rad = Math.PI/4;   // esta variable es para la rotacion ya que una rotacion el angulo debe estar en radianes
+    
+    for (var i = 0; i < 4; i++) // ciclo for para que vaya haciendo el proceso iniciando desde 0 hasta el 4
+     {  
+            arrCube.push(cubo(t/i,t/i,t/i,0,0,0, 'Basic',(i==1 ? 'red':i==2 ? 'green':'blue'), false)); // el cubo inicia en el origen como lo vemos y tambien le asignamos  los colores
+            // rojo verde y azul asi tambien acortamos el procedimiento del condicional 
+
+            if (i==1){      // si i es igual a 1 entonces el primer cubo quedara posicionado en su punto inical 
+                arrCube[i].geometry.translate(t/2, t/2,t/2)  // con el translate le asignamos las coordenadas para que se posicione
+            }
+            if (i==2){       // si es igual a dos entonces el segundo cubo se rotara y cambiara de posicion 
+                arrCube[i].rotation.y=rad; // asigna la rotacion 
+                arrCube[i].geometry.translate(1.4, t+(i/2),1.4)
+                cube.position.z=2; 
+                
+            }
+
+            if (i==3) {
+                 arrCube[i].geometry.translate(t/2, t+1+(i/2),t/2)
+                
+            }
+
+            
+   }
+            
+      
+       
+
+     
+
+
+    const axesHelper = new THREE.AxesHelper(10);
+    scene.add(axesHelper);
+
+    camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 100);
+    camera.position.set(t/2, t+t/2+t/4+5, t/2);
+    camera.lookAt(arrCube[2].position);
+    clock = new THREE.Clock();
+    window.addEventListener('resize', onWindowResize, false);
+}
+
+var dir = 1;
+
+function onWindowResize() {
+    windowHalfX = window.innerWidth / 2;
+    windowHalfY = window.innerHeight / 2;
+    camera.aspect = window.innerWidth / window.innerHeight;
+    camera.updateProjectionMatrix();
+    renderer.setSize(window.innerWidth, window.innerHeight);
+}
+
+init();
+renderer.render(scene, camera);
+</script>
+</body>
+</html>
