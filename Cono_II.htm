@@ -9,7 +9,7 @@
     </style>
 </head>
 <body>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script> // Librería three.js
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script> // Librería three.js  
 <script>
     var WIDTH = window.innerWidth; // Variable del tamaño de todo el ancho de la ventana
     var HEIGHT = window.innerHeight; // Variable del tamaño de todo el alto de la pantalla
@@ -31,12 +31,9 @@
     const ejesXYZ = new THREE.AxesHelper( 100 );
     scene.add( ejesXYZ );
 
-    function cono(transformación){ 
-    //CONO SIN TRANSFORMAR:
-        var altura
-            if (transformación==false){
-            altura =1;}
-                else {altura =3;}
+    function cono(){ 
+    //CONO TRANSFORMAR:
+        var altura = 3;
          var diametro =2;
         var lados = 10;
         var coneGeometry = new THREE.ConeGeometry(diametro,altura,lados);
@@ -49,7 +46,7 @@
 
     //CONO TRANSFORMADO:
 
-         if (transformación==true){
+      
              cone.rotation.z=-Math.PI/2;
              cone.position.x=altura/2+0.85;
              cone.position.y=0.83;
@@ -60,17 +57,12 @@
              camera.position.x = -3;
              camera.position.z = 20;
              camera.lookAt(-2,0,0);
-
-   }
-
+   
 
 
 }
-    //TRANSFORMACIÓN
-    //True= Aplicar transformación
-    //False= NO aplicar transformación
-
-    cono(true);
+    //CONO TRANSFORMADO
+    cono();
 
     
     var light = new THREE.PointLight(0xFFFFFF);
